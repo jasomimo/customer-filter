@@ -1,0 +1,17 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <h3 class="text-uppercase">Customer filter</h3>
+        </div>
+    </div>
+    <div class="row" *ngFor="let filterStep of state; let i = index">
+        <div class="col py-2">
+            <app-filter-step [config]="config" [filterStep]="filterStep" [filterStepIndex]="i" class="my-2"></app-filter-step>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-primary" (click)="onApplyFilters()">Apply filters</button>
+        </div>
+    </div>
+</div>
