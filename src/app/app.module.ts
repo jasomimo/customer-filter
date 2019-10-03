@@ -7,6 +7,7 @@ import { FilterFunnelComponent } from './filter-funnel/filter-funnel.component';
 import { FilterStepComponent } from './filter-step/filter-step.component';
 import { SelectInputComponent } from './common/select-input/select-input.component';
 import { PropertyFilterComponent } from './property-filter/property-filter.component';
+import { OperatorSelectComponent } from './operator-select/operator-select.component';
 
 @NgModule({
     declarations: [
@@ -14,7 +15,8 @@ import { PropertyFilterComponent } from './property-filter/property-filter.compo
         FilterFunnelComponent,
         FilterStepComponent,
         SelectInputComponent,
-        PropertyFilterComponent
+        PropertyFilterComponent,
+        OperatorSelectComponent
     ],
     imports: [
         BrowserModule,

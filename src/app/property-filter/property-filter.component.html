@@ -1,11 +1,11 @@
 <div class="row">
     <div class="col-2 pb-3">
         <!-- Event properties dropdown -->
-        <app-select-input [options]="propertiesDropdown.options" [selectedOption]="propertiesDropdown.selectedOption" (select)="onPropertySelect($event)"></app-select-input>
+        <app-select-input [options]="propertiesDropdown.options" [selectedOption]="propertiesDropdown.selectedOption" (change)="onPropertyChange($event)"></app-select-input>
     </div>
     <div class="col-3 pb-3">
         <!-- Property operators dropdown -->
-
+        <app-operator-select [stringOperators]="stringOperators" [numberOperators]="numberOperators" (change)="onOperatorChange($event)"></app-operator-select>
     </div>
     <div class="col-3 pb-3">
         <!-- Operand field 1 -->

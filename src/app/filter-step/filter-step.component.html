@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-2 pt-3">
             <!-- Events dropdown -->
-            <app-select-input *ngIf="eventDropdown" [options]="eventDropdown.options" [selectedOption]="eventDropdown.selectedOption" (select)="onEventSelect($event)"></app-select-input>
+            <app-select-input *ngIf="eventDropdown" [options]="eventDropdown.options" [selectedOption]="eventDropdown.selectedOption" (change)="onEventChange($event)"></app-select-input>
         </div>
         <div class="col-10 pt-3">
             <div class="container-fluid">

@@ -10,7 +10,7 @@ export class SelectInputComponent implements OnInit {
 	@Input() options: string[];
 	@Input() selectedOption: string;
 	
-	@Output() select = new EventEmitter<string>();
+	@Output() change = new EventEmitter<string>();
 	
 	constructor() { }
 
@@ -28,7 +28,7 @@ export class SelectInputComponent implements OnInit {
 	onChange(option:string) {
 		
 		this.selectedOption = option;
-		this.select.emit(option);
+		this.change.emit(option);
 	}
 
 }

@@ -33,7 +33,7 @@ export class FilterStepComponent implements OnInit {
             });
     }
     
-    onEventSelect(option: string) {
+    onEventChange(option: string) {
         
         console.log(option);
         

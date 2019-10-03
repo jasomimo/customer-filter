@@ -17,7 +17,20 @@ export class PropertyFilterComponent implements OnInit {
     
     filter: Filter;
     filterProperties: FilterProperty[];
+    
     propertiesDropdown: SelectData;
+    constraintDropdown: SelectData;
+    
+    
+    stringOperators: SelectData = {
+        options: ['a', 'b', 'c'],
+        selectedOption: 'a'
+    };
+    
+    numberOperators: SelectData = {
+        options: ['1', '2', '3'],
+        selectedOption: '2'
+    };
     
     constructor(private filterService: FilterService) { }
 
@@ -37,12 +50,16 @@ export class PropertyFilterComponent implements OnInit {
             });
     }
 
-    onPropertySelect(option: string) {
+    onPropertyChange(option: string) {
         
         this.filter.property = option;
         this.filter.constraint = this.getDefaultFilterConstraint(option, this.filterProperties);
         
         this.filterService.updateFilterProperty(this.filter, this.filterStepIndex, this.filterIndex);
+    }
+    
+    onOperatorChange(data: {option: string, type: string}) {
+        console.log(data);
     }
     
     onRemove() {
