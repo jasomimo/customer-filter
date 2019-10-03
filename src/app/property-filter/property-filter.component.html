@@ -5,13 +5,19 @@
     </div>
     <div class="col-3 pb-3">
         <!-- Property operators dropdown -->
-        <app-operator-select [stringOperators]="stringOperators" [numberOperators]="numberOperators" (change)="onOperatorChange($event)"></app-operator-select>
+        <app-operator-select [stringOperators]="constraintsDropdown.string" [numberOperators]="constraintsDropdown.number" (change)="onOperatorChange($event)"></app-operator-select>
     </div>
     <div class="col-3 pb-3">
         <!-- Operand field 1 -->
+        <div class="form-group">
+            <input [(ngModel)]="operand.first" type="text" class="form-control">
+        </div>
     </div>
-    <div class="col-3 pb-3">
+    <div *ngIf="showSecondOperand()" class="col-3 pb-3">
         <!-- Optionally operand field 2 -->
+        <div class="form-group">
+            <input [(ngModel)]="operand.second" type="text" class="form-control">
+        </div>
     </div>
     <div class="col-1 pb-3">
         <button (click)="onRemove()" class="btn btn-outline-secondary">X</button>

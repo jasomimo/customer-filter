@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { SelectData } from '../common/model/select-input.model';
+import { ChangeData } from './operator-select.model';
 
 @Component({
     selector: 'app-operator-select',
@@ -11,35 +12,34 @@ export class OperatorSelectComponent implements OnInit {
     @Input() stringOperators: SelectData;
     @Input() numberOperators: SelectData;
 
-    // TODO: create interface
-    @Output() change = new EventEmitter<{option: string, type: string}>();
     
-    showMenu = false;
+    @Output() change = new EventEmitter<ChangeData>();
+    
     showNumberSelect = true;
 
     constructor() { }
 
     ngOnInit() {
-        
+        this.showNumberSelect = this.stringOperators.selectedOption === null;
     }
     
-    onFocus() {
-        this.showMenu = true;
-    }
-    
-    onFocusOut() {
-        this.showMenu = false;
-    }
-
     onShowNumber(showNumber: boolean) {
         this.showNumberSelect = showNumber;
     }
 
     onNumberOperatorChange(option: string) {
+        
+        this.stringOperators.selectedOption = null;
+        this.numberOperators.selectedOption = option;
+        
         this.change.emit({option, type: 'number'});
     }
     
     onStringOperatorChange(option: string) {
+        
+        this.stringOperators.selectedOption = option;
+        this.numberOperators.selectedOption = null;
+        
         this.change.emit({option, type: 'string'});
     }
 }

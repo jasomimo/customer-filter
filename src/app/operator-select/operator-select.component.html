@@ -1,4 +1,8 @@
 <div class="input-group">
+    <div class="input-group-prepend">
+        <button (click)="onShowNumber(true)" [ngClass]="{'btn-outline-secondary': !showNumberSelect, 'btn-secondary': showNumberSelect}" class="btn" type="button">Number</button>
+        <button (click)="onShowNumber(false)" [ngClass]="{'btn-outline-secondary': showNumberSelect, 'btn-secondary': !showNumberSelect}" class="btn" type="button">String</button>
+    </div>
     <app-select-input *ngIf="showNumberSelect" 
                         [options]="numberOperators.options" 
                         [selectedOption]="numberOperators.selectedOption" 
@@ -9,8 +13,4 @@
                         [options]="stringOperators.options" 
                         [selectedOption]="stringOperators.selectedOption" 
                         (change)="onStringOperatorChange($event)"></app-select-input>
-    <div class="input-group-append">
-        <button (click)="onShowNumber(true)" [ngClass]="{'btn-outline-secondary': !showNumberSelect, 'btn-secondary': showNumberSelect}" class="btn" type="button">Number</button>
-        <button (click)="onShowNumber(false)" [ngClass]="{'btn-outline-secondary': showNumberSelect, 'btn-secondary': !showNumberSelect}" class="btn" type="button">String</button>
-    </div>
 </div>
