@@ -1,6 +1,3 @@
-export type ConstraintString = 'string';
-export type ConstraintNumber = 'number';
-
 export interface NumberConstraint {
     type: 'number',
     operator: string,
@@ -18,14 +15,14 @@ export interface ConstraintDefinition {
     stringConstraints: StringConstraint[]
 }
 
-export interface EventProperty {
+export interface FilterProperty {
     name: string,
     constraints: ConstraintDefinition
 }
 
 export interface FilterEvent {
     type: string,
-    properties: EventProperty[]
+    properties: FilterProperty[]
 }
 
 export interface FilterConfig {

@@ -1,7 +1,7 @@
-<div class="container">
+<div class="container-fluid">
     <div class="row">
         <div class="col pt-5">
-            <app-filter-funnel [config]="filterConfig" [state]="filterState" (applyFilters)="onApplyFilters($event)"></app-filter-funnel>
+            <app-filter-funnel (applyFilters)="onApplyFilters($event)"></app-filter-funnel>
         </div>
     </div>
 </div>

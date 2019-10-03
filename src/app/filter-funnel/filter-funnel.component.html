@@ -6,7 +6,12 @@
     </div>
     <div class="row" *ngFor="let filterStep of state; let i = index">
         <div class="col py-2">
-            <app-filter-step [config]="config" [filterStep]="filterStep" [filterStepIndex]="i" class="my-2"></app-filter-step>
+            <app-filter-step [filterStepIndex]="i" class="my-2"></app-filter-step>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-center">
+            <a href="javascript:;" (click)="onAddFilterStep()">+ Add funnel step</a>
         </div>
     </div>
     <div class="row">

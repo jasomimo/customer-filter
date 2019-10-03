@@ -1,0 +1,19 @@
+<div class="row">
+    <div class="col-2 pb-3">
+        <!-- Event properties dropdown -->
+        <app-select-input [options]="propertiesDropdown.options" [selectedOption]="propertiesDropdown.selectedOption" (select)="onPropertySelect($event)"></app-select-input>
+    </div>
+    <div class="col-3 pb-3">
+        <!-- Property operators dropdown -->
+
+    </div>
+    <div class="col-3 pb-3">
+        <!-- Operand field 1 -->
+    </div>
+    <div class="col-3 pb-3">
+        <!-- Optionally operand field 2 -->
+    </div>
+    <div class="col-1 pb-3">
+        <button (click)="onRemove()" class="btn btn-outline-secondary">X</button>
+    </div>
+</div>

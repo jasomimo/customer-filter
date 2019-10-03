@@ -1,17 +1,60 @@
 import { Injectable } from '@angular/core';
-import { FilterConfig, NumberConstraint, StringConstraint } from '../model/filter-config.model';
-import { of, Observable } from 'rxjs';
+import { FilterConfig, NumberConstraint, StringConstraint, FilterProperty } from '../model/filter-config.model';
+import { of, Observable, BehaviorSubject } from 'rxjs';
+import { cloneDeep } from 'lodash-es';
+import { FilterStep, Filter } from '../model/filter-data.model';
 
 @Injectable({
     providedIn: 'root'
 })
-export class FilterConfigService {
+export class FilterService {
 
     constructor() { }
 
-    loadFilterConfig(): Observable<FilterConfig> {
+    private _filterState: FilterStep[] = [{ name: null, type: null, filter: [] }];
+    
+    filterConfig = new BehaviorSubject<FilterConfig>(this.getFilerConfig());
+    
+    filterState = new BehaviorSubject<FilterStep[]>(this._filterState);
+    
+    updateState(filterState: FilterStep[]) {
         
-        return of({
+        if (!filterState || filterState.length === 0) {
+            return;
+        }
+        
+        this._filterState = filterState;
+        this.filterState.next(cloneDeep(this._filterState));
+    }
+    
+    updateFilterStep(filterStep: FilterStep, index: number) {
+        
+        if (!filterStep) {
+            throw new Error('filterStep is not defined');
+        }
+        
+        this._filterState[index] = filterStep;
+        this.filterState.next(cloneDeep(this._filterState));
+    }
+    
+    updateFilterProperty(filter: Filter, filterStepIndex: number, filterIndex: number) {
+        
+        const filterStep = this._filterState[filterStepIndex];
+        filterStep.filter[filterIndex] = filter;
+        
+        this.filterState.next(cloneDeep(this._filterState));
+    }
+    
+    removeFilterProperty(filterStepIndex: number, filterIndex: number) {
+        
+        const filterStep = this._filterState[filterStepIndex];
+        filterStep.filter.splice(filterIndex, 1);
+        
+        this.filterState.next(cloneDeep(this._filterState));
+    }
+    
+    private getFilerConfig(): FilterConfig {
+        return {
             events: [
                 { 
                     type: 'banner', 
@@ -78,7 +121,7 @@ export class FilterConfigService {
                     ]
                 }
             ]
-        });
+        };
     }
     
     private getNumberConstraints(): NumberConstraint[] {

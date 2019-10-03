@@ -5,12 +5,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app/app.component';
 import { FilterFunnelComponent } from './filter-funnel/filter-funnel.component';
 import { FilterStepComponent } from './filter-step/filter-step.component';
+import { SelectInputComponent } from './common/select-input/select-input.component';
+import { PropertyFilterComponent } from './property-filter/property-filter.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         FilterFunnelComponent,
-        FilterStepComponent
+        FilterStepComponent,
+        SelectInputComponent,
+        PropertyFilterComponent
     ],
     imports: [
         BrowserModule,

@@ -1,0 +1,4 @@
+<select class="custom-select" (change)="onChange($event.target.value)">
+    <option *ngIf="!selectedOption" selected disabled="disabled">Unnamed</option>
+    <option [value]="option" [selected]="option === selectedOption" *ngFor="let option of options; let i=index">{{option}}</option>
+</select>

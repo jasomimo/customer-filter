@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FilterDataService } from '../service/filter-data.service';
-import { FilterConfig } from '../model/filter-config.model';
-import { FilterConfigService } from '../service/filter-config.service';
+import { FilterService } from '../service/filter.service';
 import { FilterStep } from '../model/filter-data.model';
 
 @Component({
@@ -10,12 +9,9 @@ import { FilterStep } from '../model/filter-data.model';
     styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-    
-    filterConfig: FilterConfig;
-    filterState: FilterStep[];
-    
+
     constructor(private filterDataService: FilterDataService,
-                private filterConfigService: FilterConfigService) {}
+                private filterService: FilterService) {}
     
     ngOnInit() {
         
@@ -23,21 +19,12 @@ export class AppComponent implements OnInit {
             .loadFilters()
             .subscribe(data => {
                 
-                console.log(data);
-                this.filterState = data;
-            });
-            
-        this.filterConfigService
-            .loadFilterConfig()
-            .subscribe(config => {
-                
-                console.log(config);
-                this.filterConfig = config;
+                this.filterService.updateState(data);
             });
     }
     
     onApplyFilters(filterSteps: FilterStep[]) {
         
-        console.log(this.filterState);
+        console.log(filterSteps);
     }
 }
