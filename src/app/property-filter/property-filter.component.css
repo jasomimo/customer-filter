@@ -1,0 +1,12 @@
+.remove-icon {
+    transition: color .3s ease;
+    font-size: 1.5rem;
+}
+
+.remove-icon:hover {
+    color: tomato;
+}
+
+input {
+    max-width: 200px;
+}

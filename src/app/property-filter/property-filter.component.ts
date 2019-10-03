@@ -1,9 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FilterProperty, FilterConfig, FilterEvent, StringConstraint, NumberConstraint } from '../model/filter-config.model';
+import { combineLatest } from 'rxjs';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+
+import { FilterProperty, FilterEvent, StringConstraint, NumberConstraint } from '../model/filter-config.model';
 import { Filter, Constraint } from '../model/filter-data.model';
 import { SelectData } from '../common/model/select-input.model';
 import { FilterService } from '../service/filter.service';
-import { combineLatest } from 'rxjs';
 import { ChangeData } from '../operator-select/operator-select.model';
 
 @Component({
@@ -24,6 +26,8 @@ export class PropertyFilterComponent implements OnInit {
     constraintsDropdown: {string: SelectData, number: SelectData};
     
     operand: {first: string | number, second: string | number};
+    
+    xIcon = faTimes;
     
     constructor(private filterService: FilterService) { }
 
@@ -69,12 +73,12 @@ export class PropertyFilterComponent implements OnInit {
         this.filterService.removeFilterProperty(this.filterStepIndex, this.filterIndex);
     }
     
-    isNumericConstraint(): boolean {
-        return this.currentConfig.constraint.type === 'number';
-    }
-    
     showSecondOperand(): boolean {
         return this.currentConfig.constraint.operandsCount === 2;
+    }
+    
+    showRemoveIcon(): boolean {
+        return this.filterIndex !== 0;
     }
     
     private getPropertiesDropdown(filterProperties: FilterProperty[], currentFilter: Filter): SelectData {

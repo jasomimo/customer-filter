@@ -1,7 +1,12 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col">
-            <span class="h5 text-uppercase">{{filterStepIndex + 1}}. step: </span><span>{{filterStep.name}}</span>
+            <span class="h5 text-uppercase text-blue">{{filterStepIndex + 1}}. step: </span>
+            <span *ngIf="filterStep.name && !editingName" class="h5 ml-2">
+                {{filterStep.name}}
+                <fa-icon [icon]="pencilIcon" (click)="onEditName()" class="ml-2 pointer"></fa-icon>
+            </span>
+            <input *ngIf="editingName" [(ngModel)]="filterStep.name" type="text" class="form-control name-input" (focusout)="onSaveName()">
         </div>
     </div>
     <div class="row">

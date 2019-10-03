@@ -2,3 +2,7 @@
 select {
     width: 200px !important;
 }
+
+.pointer {
+    cursor: pointer;
+}

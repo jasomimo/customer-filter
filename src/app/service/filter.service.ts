@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { FilterConfig, NumberConstraint, StringConstraint, FilterProperty } from '../model/filter-config.model';
-import { of, Observable, BehaviorSubject } from 'rxjs';
+import { FilterConfig, NumberConstraint, StringConstraint } from '../model/filter-config.model';
+import { BehaviorSubject } from 'rxjs';
 import { cloneDeep } from 'lodash-es';
 import { FilterStep, Filter } from '../model/filter-data.model';
 
@@ -11,9 +11,8 @@ export class FilterService {
 
     constructor() { }
 
+    // Filter state
     private _filterState: FilterStep[] = [{ name: null, type: null, filter: [] }];
-    
-    filterConfig = new BehaviorSubject<FilterConfig>(this.getFilerConfig());
     
     filterState = new BehaviorSubject<FilterStep[]>(this._filterState);
     
@@ -52,6 +51,9 @@ export class FilterService {
         
         this.filterState.next(cloneDeep(this._filterState));
     }
+    
+    // Filter configuration
+    filterConfig = new BehaviorSubject<FilterConfig>(this.getFilerConfig());
     
     private getFilerConfig(): FilterConfig {
         return {

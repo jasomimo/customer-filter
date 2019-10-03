@@ -1,3 +1,12 @@
 .grid-align {
     padding-left: 30px;
 }
+
+.name-input {
+    display: inline;
+    max-width: 250px;
+}
+
+.text-blue {
+    color: dodgerblue;
+}

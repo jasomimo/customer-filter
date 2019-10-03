@@ -19,7 +19,7 @@
             <input [(ngModel)]="operand.second" type="text" class="form-control">
         </div>
     </div>
-    <div class="col-1 pb-3">
-        <button (click)="onRemove()" class="btn btn-outline-secondary">X</button>
+    <div class="col-1 pb-3" *ngIf="showRemoveIcon()">
+        <fa-icon [icon]="xIcon" (click)="onRemove()" class="pointer remove-icon"></fa-icon>
     </div>
 </div>

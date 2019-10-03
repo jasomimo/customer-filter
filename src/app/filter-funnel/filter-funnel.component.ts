@@ -1,33 +1,36 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { FilterStep } from '../model/filter-data.model';
-import { FilterConfig } from '../model/filter-config.model';
 import { FilterService } from '../service/filter.service';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-filter-funnel',
     templateUrl: './filter-funnel.component.html',
     styleUrls: ['./filter-funnel.component.css']
 })
-export class FilterFunnelComponent implements OnInit {
+export class FilterFunnelComponent implements OnInit, OnDestroy {
 
     @Output() applyFilters = new EventEmitter<FilterStep[]>();
     
-    config: FilterConfig;
     state: FilterStep[];
+    stateSubscription: Subscription;
     
     constructor(private filterService: FilterService) { }
 
     ngOnInit() {
         
-        this.filterService.filterConfig.subscribe(config => {
-            this.config = config;
-        });
-        
-        this.filterService.filterState.subscribe(state => {
+        this.stateSubscription = this.filterService.filterState.subscribe(state => {
             this.state = state;
         });
     }
-
+    
+    ngOnDestroy() {
+        
+        if (this.stateSubscription) {
+            this.stateSubscription.unsubscribe();
+        }
+    }
+    
     onAddFilterStep() {
         this.state.push({ name: null, type: null, filter: [] });
         this.filterService.updateState(this.state);

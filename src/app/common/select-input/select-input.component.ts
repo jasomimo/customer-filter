@@ -19,10 +19,6 @@ export class SelectInputComponent implements OnInit {
 		if (!this.options || this.options.length === 0) {
 			throw new Error('Options for select input are not defined');
 		}
-		
-		if (!this.selectedOption) {
-			this.selectedOption = this.options[0];
-		}
 	}
 	
 	onChange(option:string) {

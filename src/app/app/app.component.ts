@@ -15,12 +15,12 @@ export class AppComponent implements OnInit {
     
     ngOnInit() {
         
-        this.filterDataService
-            .loadFilters()
-            .subscribe(data => {
+        // this.filterDataService
+        //     .loadFilters()
+        //     .subscribe(data => {
                 
-                this.filterService.updateState(data);
-            });
+        //         this.filterService.updateState(data);
+        //     });
     }
     
     onApplyFilters(filterSteps: FilterStep[]) {

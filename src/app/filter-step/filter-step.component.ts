@@ -1,9 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FilterConfig, FilterProperty } from '../model/filter-config.model';
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+import { combineLatest } from 'rxjs';
+
+import { FilterConfig } from '../model/filter-config.model';
 import { FilterStep, Filter } from '../model/filter-data.model';
 import { SelectData } from '../common/model/select-input.model';
 import { FilterService } from '../service/filter.service';
-import { combineLatest } from 'rxjs';
+
 
 @Component({
     selector: 'app-filter-step',
@@ -18,6 +21,9 @@ export class FilterStepComponent implements OnInit {
     filterStep: FilterStep;
 
     eventDropdown: SelectData;
+    
+    pencilIcon = faPencilAlt;
+    editingName = false;
     
     constructor(private filterService: FilterService) { }
 
@@ -37,6 +43,7 @@ export class FilterStepComponent implements OnInit {
         
         console.log(option);
         
+        this.filterStep.name = this.filterStep.name || option;
         this.filterStep.type = option;
         this.filterStep.filter = [this.getDefaultFilter(option)];
         
@@ -47,6 +54,16 @@ export class FilterStepComponent implements OnInit {
         
         this.filterStep.filter.push(this.getDefaultFilter(this.filterStep.type));
         this.filterService.updateFilterStep(this.filterStep, this.filterStepIndex);
+    }
+    
+    onEditName() {
+        
+        this.editingName = true;
+    }
+    
+    onSaveName() {
+        this.editingName = false;
+        this.onEventChange(this.filterStep.type);
     }
     
     private getEventDropdownData(confgi: FilterConfig, filterStep: FilterStep): SelectData {
@@ -60,18 +77,27 @@ export class FilterStepComponent implements OnInit {
     private getDefaultFilter(eventType: string): Filter {
         
         const event = this.config.events.find(e => e.type === eventType);
-        const firstProperty = event.properties[0];
+        const defaultProperty = event.properties[0];
         
-        const defaultConstraint = firstProperty.constraints.numberConstraints.length > 0 
-                ? firstProperty.constraints.numberConstraints[0]
-                : firstProperty.constraints.stringConstraints[0];
+        const defaultConstraint = defaultProperty.constraints.numberConstraints.length > 0 
+                ? defaultProperty.constraints.numberConstraints[0]
+                : defaultProperty.constraints.stringConstraints[0];
         
+        let defaultOperands: string[] | number[];
+        
+        if (defaultConstraint.type === 'number') {
+            defaultOperands = defaultConstraint.operandsCount == 2 ? [0, 0] : [0];
+        }
+        else {
+            defaultOperands = defaultConstraint.operandsCount == 2 ? ['', ''] : [''];
+        }
+                
         return {
-            property: firstProperty.name,
+            property: defaultProperty.name,
             constraint: { 
                 type: defaultConstraint.type,
                 operator: defaultConstraint.operator,
-                operands: []
+                operands: defaultOperands
             }
         };
     }
