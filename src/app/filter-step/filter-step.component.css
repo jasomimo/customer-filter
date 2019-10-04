@@ -10,3 +10,16 @@
 .text-blue {
     color: dodgerblue;
 }
+
+.edit-name-icon {
+    font-size: 1rem;
+}
+
+.edit-step-icons {
+    font-size: 1.25rem;
+    color: #b3d7ff;
+}
+
+.edit-step-icons fa-icon {
+    margin-left: 0.75rem;
+}

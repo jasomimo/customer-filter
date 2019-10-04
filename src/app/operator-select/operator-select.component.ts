@@ -2,6 +2,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { SelectData } from '../common/model/select-input.model';
 import { ChangeData } from './operator-select.model';
 
+import { faAlignCenter } from '@fortawesome/free-solid-svg-icons'
+
 @Component({
     selector: 'app-operator-select',
     templateUrl: './operator-select.component.html',
@@ -11,11 +13,11 @@ export class OperatorSelectComponent implements OnInit {
 
     @Input() stringOperators: SelectData;
     @Input() numberOperators: SelectData;
-
     
     @Output() change = new EventEmitter<ChangeData>();
     
     showNumberSelect = true;
+    textIcon = faAlignCenter;
 
     constructor() { }
 

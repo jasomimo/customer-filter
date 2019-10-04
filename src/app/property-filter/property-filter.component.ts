@@ -27,7 +27,7 @@ export class PropertyFilterComponent implements OnInit {
     
     operand: {first: string | number, second: string | number};
     
-    xIcon = faTimes;
+    removeIcon = faTimes;
     
     constructor(private filterService: FilterService) { }
 
@@ -38,6 +38,10 @@ export class PropertyFilterComponent implements OnInit {
                 
                 const filterStep = state[this.filterStepIndex];
                 this.filter = filterStep.filter[this.filterIndex];
+                
+                if (!this.filter) {
+                    return;
+                }
                 
                 const event = config.events.find(event => event.type === filterStep.type);
                 const property = event.properties.find(property => property.name === this.filter.property);

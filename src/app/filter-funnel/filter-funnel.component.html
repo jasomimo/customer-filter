@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid funnel-container">
     <div class="row">
         <div class="col">
             <h3 class="text-uppercase">Customer filter</h3>
@@ -9,12 +9,12 @@
             <app-filter-step [filterStepIndex]="i" class="my-2"></app-filter-step>
         </div>
     </div>
-    <div class="row">
+    <div class="row mt-3">
         <div class="col text-center">
             <a href="javascript:;" (click)="onAddFilterStep()">+ Add funnel step</a>
         </div>
     </div>
-    <div class="row">
+    <div class="row mt-3">
         <div class="col">
             <button class="btn btn-primary" (click)="onApplyFilters()">Apply filters</button>
         </div>

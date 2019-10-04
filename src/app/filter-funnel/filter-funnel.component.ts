@@ -32,8 +32,8 @@ export class FilterFunnelComponent implements OnInit, OnDestroy {
     }
     
     onAddFilterStep() {
-        this.state.push({ name: null, type: null, filter: [] });
-        this.filterService.updateState(this.state);
+        const emptyStep = { name: null, type: null, filter: [] };
+        this.filterService.addFilterStep(emptyStep);
     }
     
     onApplyFilters() {

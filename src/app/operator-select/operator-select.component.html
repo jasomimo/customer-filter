@@ -1,7 +1,20 @@
 <div class="input-group">
     <div class="input-group-prepend">
-        <button (click)="onShowNumber(true)" [ngClass]="{'btn-outline-secondary': !showNumberSelect, 'btn-secondary': showNumberSelect}" class="btn" type="button">Number</button>
-        <button (click)="onShowNumber(false)" [ngClass]="{'btn-outline-secondary': showNumberSelect, 'btn-secondary': !showNumberSelect}" class="btn" type="button">String</button>
+        
+        <button (click)="onShowNumber(true)" 
+                [ngClass]="{'btn-outline-secondary': !showNumberSelect, 'btn-secondary': showNumberSelect}" 
+                class="btn" 
+                type="button">
+                <span tooltip="Number operators">#</span>
+        </button>
+        
+        <button (click)="onShowNumber(false)" 
+                [ngClass]="{'btn-outline-secondary': showNumberSelect, 'btn-secondary': !showNumberSelect}" 
+                class="btn" 
+                type="button">
+                <fa-icon [icon]="textIcon" class="pointer remove-icon"></fa-icon>
+        </button>
+                
     </div>
     <app-select-input *ngIf="showNumberSelect" 
                         [options]="numberOperators.options" 

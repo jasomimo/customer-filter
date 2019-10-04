@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 select {
-    width: 200px !important;
+    max-width: 200px !important;
 }
 
 .pointer {

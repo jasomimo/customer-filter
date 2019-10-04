@@ -1,28 +1,37 @@
 <div class="container-fluid">
-    <div class="row">
-        <div class="col">
+    <div class="row mt-3">
+        <div class="col-9">
             <span class="h5 text-uppercase text-blue">{{filterStepIndex + 1}}. step: </span>
             <span *ngIf="filterStep.name && !editingName" class="h5 ml-2">
                 {{filterStep.name}}
-                <fa-icon [icon]="pencilIcon" (click)="onEditName()" class="ml-2 pointer"></fa-icon>
+                <fa-icon [icon]="pencilIcon" (click)="onEditName()" class="edit-name-icon ml-2 pointer"></fa-icon>
             </span>
-            <input *ngIf="editingName" [(ngModel)]="filterStep.name" type="text" class="form-control name-input" (focusout)="onSaveName()">
+            <input *ngIf="editingName" [(ngModel)]="filterStep.name" type="text" class="form-control name-input" (focusout)="onSaveName()" appAutofocus>
+        </div>
+        <div class="col-3 text-right edit-step-icons">
+            <div>
+                <fa-icon [icon]="trashIcon" (click)="removeFilterStep()" class="pointer"></fa-icon>
+                <fa-icon [icon]="cloneIcon" (click)="cloneFilterStep()" class="pointer"></fa-icon>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-2 pt-3">
+    <div class="row mt-3">
+        <div class="col-2">
             <!-- Events dropdown -->
             <app-select-input *ngIf="eventDropdown" [options]="eventDropdown.options" [selectedOption]="eventDropdown.selectedOption" (change)="onEventChange($event)"></app-select-input>
         </div>
-        <div class="col-10 pt-3">
+        <div *ngIf="filterEventChosen() && anyFilters()" class="col-10">
             <div class="container-fluid">
                 <app-property-filter *ngFor="let filter of filterStep.filter; let i=index" 
                                      [filterIndex]="i"
                                      [filterStepIndex]="filterStepIndex"></app-property-filter>
             </div>
         </div>
+        <div *ngIf="filterEventChosen() && !anyFilters()" class="col-10">
+            <a href="javascript:;" (click)="onRefineMore()">+ Add an event attribute</a>
+        </div>
     </div>
-    <div class="row">
+    <div *ngIf="filterEventChosen() && anyFilters()" class="row">
         <div class="col-2 offset-2 grid-align">
             <a href="javascript:;" (click)="onRefineMore()">Refine more</a>
         </div>

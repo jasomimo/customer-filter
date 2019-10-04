@@ -10,6 +10,7 @@ import { FilterStepComponent } from './filter-step/filter-step.component';
 import { SelectInputComponent } from './common/select-input/select-input.component';
 import { PropertyFilterComponent } from './property-filter/property-filter.component';
 import { OperatorSelectComponent } from './operator-select/operator-select.component';
+import { AutofocusDirective } from './common/directive/autofocus.directive';
 
 @NgModule({
     declarations: [
@@ -18,7 +19,8 @@ import { OperatorSelectComponent } from './operator-select/operator-select.compo
         FilterStepComponent,
         SelectInputComponent,
         PropertyFilterComponent,
-        OperatorSelectComponent
+        OperatorSelectComponent,
+        AutofocusDirective
     ],
     imports: [
         BrowserModule,

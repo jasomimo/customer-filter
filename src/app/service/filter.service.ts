@@ -16,13 +16,18 @@ export class FilterService {
     
     filterState = new BehaviorSubject<FilterStep[]>(this._filterState);
     
-    updateState(filterState: FilterStep[]) {
+    initState(filterState: FilterStep[]) {
         
         if (!filterState || filterState.length === 0) {
             return;
         }
         
         this._filterState = filterState;
+        this.filterState.next(cloneDeep(this._filterState));
+    }
+    
+    addFilterStep(filterStep: FilterStep) {
+        this._filterState.push(filterStep);
         this.filterState.next(cloneDeep(this._filterState));
     }
     
@@ -33,6 +38,12 @@ export class FilterService {
         }
         
         this._filterState[index] = filterStep;
+        this.filterState.next(cloneDeep(this._filterState));
+    }
+    
+    removeFilterStep(filterStepIndex: number) {
+        
+        this._filterState.splice(filterStepIndex, 1);
         this.filterState.next(cloneDeep(this._filterState));
     }
     

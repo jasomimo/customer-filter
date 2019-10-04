@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+import { faPencilAlt, faTrashAlt, faClone } from '@fortawesome/free-solid-svg-icons';
 import { combineLatest } from 'rxjs';
 
-import { FilterConfig } from '../model/filter-config.model';
+import { FilterConfig, FilterEvent } from '../model/filter-config.model';
 import { FilterStep, Filter } from '../model/filter-data.model';
 import { SelectData } from '../common/model/select-input.model';
 import { FilterService } from '../service/filter.service';
@@ -17,13 +17,16 @@ export class FilterStepComponent implements OnInit {
 
     @Input() filterStepIndex: number;
     
-    config: FilterConfig;
+    currentEvent: FilterEvent;
     filterStep: FilterStep;
 
     eventDropdown: SelectData;
     
-    pencilIcon = faPencilAlt;
     editingName = false;
+    
+    pencilIcon = faPencilAlt;
+    trashIcon = faTrashAlt;
+    cloneIcon = faClone;
     
     constructor(private filterService: FilterService) { }
 
@@ -32,38 +35,65 @@ export class FilterStepComponent implements OnInit {
         combineLatest(this.filterService.filterConfig, this.filterService.filterState)
             .subscribe(([config, state]) => {
                 
-                this.config = config;
                 this.filterStep = state[this.filterStepIndex];
                 
-                this.eventDropdown = this.getEventDropdownData(this.config, this.filterStep);
+                if (!this.filterStep) {
+                    return;
+                }
+                
+                this.currentEvent = config.events.find(event => event.type === this.filterStep.type);
+                this.eventDropdown = this.getEventDropdownData(config, this.filterStep);
             });
     }
     
-    onEventChange(option: string) {
+    onEventChange(option: string): void {
         
         console.log(option);
         
         this.filterStep.name = this.filterStep.name || option;
         this.filterStep.type = option;
-        this.filterStep.filter = [this.getDefaultFilter(option)];
+        this.filterStep.filter = [];
+        // this.filterStep.filter = [this.getDefaultFilter(option)];
         
         this.filterService.updateFilterStep(this.filterStep, this.filterStepIndex);
     }
     
-    onRefineMore() {
-        
-        this.filterStep.filter.push(this.getDefaultFilter(this.filterStep.type));
-        this.filterService.updateFilterStep(this.filterStep, this.filterStepIndex);
-    }
-    
-    onEditName() {
-        
+    // Edit step name
+    onEditName(): void {
         this.editingName = true;
     }
     
-    onSaveName() {
+    onSaveName(): void {
         this.editingName = false;
         this.onEventChange(this.filterStep.type);
+    }
+    
+    cloneFilterStep(): void {
+        this.filterService.addFilterStep(this.filterStep);
+    }
+    
+    // Remove this filter step
+    removeFilterStep(): void {
+        this.filterService.removeFilterStep(this.filterStepIndex);
+    }
+    
+    // Add new filter property
+    onRefineMore(): void {
+        
+        this.filterStep.filter.push(this.getDefaultFilter(this.currentEvent));
+        // this.filterStep.filter.push(this.getDefaultFilter(this.currentEvent.type));
+        this.filterService.updateFilterStep(this.filterStep, this.filterStepIndex);
+    }
+    
+    
+    
+    // UI helpers
+    filterEventChosen(): boolean {
+        return !!this.filterStep.type;
+    }
+    
+    anyFilters(): boolean {
+        return this.filterStep.type && this.filterStep.filter && this.filterStep.filter.length > 0;
     }
     
     private getEventDropdownData(confgi: FilterConfig, filterStep: FilterStep): SelectData {
@@ -74,10 +104,9 @@ export class FilterStepComponent implements OnInit {
         return { options, selectedOption };
     }
     
-    private getDefaultFilter(eventType: string): Filter {
+    private getDefaultFilter(currentEvent: FilterEvent): Filter {
         
-        const event = this.config.events.find(e => e.type === eventType);
-        const defaultProperty = event.properties[0];
+        const defaultProperty = currentEvent.properties[0];
         
         const defaultConstraint = defaultProperty.constraints.numberConstraints.length > 0 
                 ? defaultProperty.constraints.numberConstraints[0]
