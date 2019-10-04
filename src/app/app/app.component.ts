@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 import { FilterDataService } from '../service/filter-data.service';
 import { FilterService } from '../service/filter.service';
@@ -21,6 +22,12 @@ export class AppComponent implements OnInit, OnDestroy {
         
         this.subscription = this.filterDataService
             .loadFilters()
+            .pipe(
+                catchError(error => {
+                    console.error(error);
+                    return of([]);
+                })
+            )
             .subscribe(data => {
                 
                 this.filterService.initState(data);
