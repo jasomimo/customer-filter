@@ -1,7 +1,8 @@
 import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+
 import { FilterStep } from '../model/filter-data.model';
 import { FilterService } from '../service/filter.service';
-import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-filter-funnel',
@@ -13,30 +14,34 @@ export class FilterFunnelComponent implements OnInit, OnDestroy {
     @Output() applyFilters = new EventEmitter<FilterStep[]>();
     
     state: FilterStep[];
-    stateSubscription: Subscription;
+    subscription: Subscription;
     
     constructor(private filterService: FilterService) { }
 
-    ngOnInit() {
+    ngOnInit(): void {
         
-        this.stateSubscription = this.filterService.filterState.subscribe(state => {
+        this.subscription = this.filterService.filterState.subscribe(state => {
             this.state = state;
         });
     }
     
-    ngOnDestroy() {
+    ngOnDestroy(): void {
         
-        if (this.stateSubscription) {
-            this.stateSubscription.unsubscribe();
+        if (this.subscription) {
+            this.subscription.unsubscribe();
         }
     }
     
-    onAddFilterStep() {
+    onAddFilterStep(): void {
         const emptyStep = { name: null, type: null, filter: [] };
         this.filterService.addFilterStep(emptyStep);
     }
     
-    onApplyFilters() {
+    onDiscardFilters(): void {
+        this.filterService.initState([]);
+    }
+    
+    onApplyFilters(): void {
         this.applyFilters.emit(this.state);
     }
 }

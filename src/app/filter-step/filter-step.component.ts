@@ -1,11 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { faPencilAlt, faTrashAlt, faClone } from '@fortawesome/free-solid-svg-icons';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
 
 import { FilterConfig, FilterEvent } from '../model/filter-config.model';
 import { FilterStep, Filter } from '../model/filter-data.model';
-import { SelectData } from '../common/model/select-input.model';
+import { SelectData } from '../common/select-input/select-input.model';
 import { FilterService } from '../service/filter.service';
+import { FilterHelperService } from '../service/filter-helper.service';
 
 
 @Component({
@@ -13,7 +14,7 @@ import { FilterService } from '../service/filter.service';
     templateUrl: './filter-step.component.html',
     styleUrls: ['./filter-step.component.css']
 })
-export class FilterStepComponent implements OnInit {
+export class FilterStepComponent implements OnInit, OnDestroy {
 
     @Input() filterStepIndex: number;
     
@@ -28,16 +29,19 @@ export class FilterStepComponent implements OnInit {
     trashIcon = faTrashAlt;
     cloneIcon = faClone;
     
-    constructor(private filterService: FilterService) { }
+    private subscription: Subscription;
+    
+    constructor(private filterService: FilterService, private helpreService: FilterHelperService) { }
 
-    ngOnInit() {
+    ngOnInit(): void {
         
-        combineLatest(this.filterService.filterConfig, this.filterService.filterState)
+        this.subscription = combineLatest(this.filterService.filterConfig, this.filterService.filterState)
             .subscribe(([config, state]) => {
                 
                 this.filterStep = state[this.filterStepIndex];
                 
                 if (!this.filterStep) {
+                    // filter step was removed
                     return;
                 }
                 
@@ -46,14 +50,18 @@ export class FilterStepComponent implements OnInit {
             });
     }
     
-    onEventChange(option: string): void {
+    ngOnDestroy(): void {
         
-        console.log(option);
+        if(this.subscription) {
+            this.subscription.unsubscribe();
+        }
+    }
+    
+    onEventChange(option: string): void {
         
         this.filterStep.name = this.filterStep.name || option;
         this.filterStep.type = option;
         this.filterStep.filter = [];
-        // this.filterStep.filter = [this.getDefaultFilter(option)];
         
         this.filterService.updateFilterStep(this.filterStep, this.filterStepIndex);
     }
@@ -65,7 +73,7 @@ export class FilterStepComponent implements OnInit {
     
     onSaveName(): void {
         this.editingName = false;
-        this.onEventChange(this.filterStep.type);
+        this.filterService.updateFilterStep(this.filterStep, this.filterStepIndex);
     }
     
     cloneFilterStep(): void {
@@ -81,11 +89,8 @@ export class FilterStepComponent implements OnInit {
     onRefineMore(): void {
         
         this.filterStep.filter.push(this.getDefaultFilter(this.currentEvent));
-        // this.filterStep.filter.push(this.getDefaultFilter(this.currentEvent.type));
         this.filterService.updateFilterStep(this.filterStep, this.filterStepIndex);
     }
-    
-    
     
     // UI helpers
     filterEventChosen(): boolean {
@@ -96,6 +101,7 @@ export class FilterStepComponent implements OnInit {
         return this.filterStep.type && this.filterStep.filter && this.filterStep.filter.length > 0;
     }
     
+    // Helpers
     private getEventDropdownData(confgi: FilterConfig, filterStep: FilterStep): SelectData {
         
         const options = confgi.events.map(event => event.type);
@@ -107,27 +113,11 @@ export class FilterStepComponent implements OnInit {
     private getDefaultFilter(currentEvent: FilterEvent): Filter {
         
         const defaultProperty = currentEvent.properties[0];
-        
-        const defaultConstraint = defaultProperty.constraints.numberConstraints.length > 0 
-                ? defaultProperty.constraints.numberConstraints[0]
-                : defaultProperty.constraints.stringConstraints[0];
-        
-        let defaultOperands: string[] | number[];
-        
-        if (defaultConstraint.type === 'number') {
-            defaultOperands = defaultConstraint.operandsCount == 2 ? [0, 0] : [0];
-        }
-        else {
-            defaultOperands = defaultConstraint.operandsCount == 2 ? ['', ''] : [''];
-        }
+        const defaultConstraint = this.helpreService.getDefaultFilterConstraint(defaultProperty);
                 
         return {
             property: defaultProperty.name,
-            constraint: { 
-                type: defaultConstraint.type,
-                operator: defaultConstraint.operator,
-                operands: defaultOperands
-            }
+            constraint: defaultConstraint
         };
     }
 }

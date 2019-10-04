@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { FilterConfig, NumberConstraint, StringConstraint } from '../model/filter-config.model';
 import { BehaviorSubject } from 'rxjs';
 import { cloneDeep } from 'lodash-es';
+
 import { FilterStep, Filter } from '../model/filter-data.model';
+import { FilterConfig, NumberConstraint, StringConstraint } from '../model/filter-config.model';
 
 @Injectable({
     providedIn: 'root'
@@ -17,10 +18,6 @@ export class FilterService {
     filterState = new BehaviorSubject<FilterStep[]>(this._filterState);
     
     initState(filterState: FilterStep[]) {
-        
-        if (!filterState || filterState.length === 0) {
-            return;
-        }
         
         this._filterState = filterState;
         this.filterState.next(cloneDeep(this._filterState));

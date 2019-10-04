@@ -15,11 +15,13 @@
     font-size: 1rem;
 }
 
-.edit-step-icons {
+.edit-step-icons fa-icon {
     font-size: 1.25rem;
     color: #b3d7ff;
+    margin-left: 0.75rem;
+    transition: color .3s ease;
 }
 
-.edit-step-icons fa-icon {
-    margin-left: 0.75rem;
+.edit-step-icons fa-icon:hover {
+    color: dodgerblue;
 }

@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+
 import { FilterDataService } from '../service/filter-data.service';
 import { FilterService } from '../service/filter.service';
 import { FilterStep } from '../model/filter-data.model';
@@ -8,19 +10,28 @@ import { FilterStep } from '../model/filter-data.model';
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
 
+    private subscription: Subscription;
+    
     constructor(private filterDataService: FilterDataService,
                 private filterService: FilterService) {}
     
     ngOnInit() {
         
-        // this.filterDataService
-        //     .loadFilters()
-        //     .subscribe(data => {
+        this.subscription = this.filterDataService
+            .loadFilters()
+            .subscribe(data => {
                 
-        //         this.filterService.updateState(data);
-        //     });
+                this.filterService.initState(data);
+            });
+    }
+    
+    ngOnDestroy() {
+        
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
     }
     
     onApplyFilters(filterSteps: FilterStep[]) {

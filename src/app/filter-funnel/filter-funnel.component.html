@@ -1,7 +1,10 @@
 <div class="container-fluid funnel-container">
     <div class="row">
-        <div class="col">
+        <div class="col-8">
             <h3 class="text-uppercase">Customer filter</h3>
+        </div>
+        <div class="col-4 text-right">
+            <a href="javascript:;" (click)="onDiscardFilters()" class="text-muted text-uppercase">Discard filters</a>
         </div>
     </div>
     <div class="row" *ngFor="let filterStep of state; let i = index">
@@ -11,7 +14,7 @@
     </div>
     <div class="row mt-3">
         <div class="col text-center">
-            <a href="javascript:;" (click)="onAddFilterStep()">+ Add funnel step</a>
+            <a href="javascript:;" (click)="onAddFilterStep()" class="add-funnel">+ Add funnel step</a>
         </div>
     </div>
     <div class="row mt-3">

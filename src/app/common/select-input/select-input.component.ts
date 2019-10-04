@@ -14,17 +14,16 @@ export class SelectInputComponent implements OnInit {
 	
 	constructor() { }
 
-	ngOnInit() {
+	ngOnInit(): void {
 		
 		if (!this.options || this.options.length === 0) {
 			throw new Error('Options for select input are not defined');
 		}
 	}
 	
-	onChange(option:string) {
+	onChange(option: string): void {
 		
 		this.selectedOption = option;
 		this.change.emit(option);
 	}
-
 }

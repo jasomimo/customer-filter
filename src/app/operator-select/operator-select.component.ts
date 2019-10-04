@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { SelectData } from '../common/model/select-input.model';
-import { ChangeData } from './operator-select.model';
-
 import { faAlignCenter } from '@fortawesome/free-solid-svg-icons'
+
+import { SelectData } from '../common/select-input/select-input.model';
+import { ChangeData } from './operator-select.model';
 
 @Component({
     selector: 'app-operator-select',
@@ -21,15 +21,23 @@ export class OperatorSelectComponent implements OnInit {
 
     constructor() { }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.showNumberSelect = this.stringOperators.selectedOption === null;
     }
     
-    onShowNumber(showNumber: boolean) {
+    onShowNumber(showNumber: boolean): void {
         this.showNumberSelect = showNumber;
+        
+        // autoselect first option from displayed options
+        if (showNumber) {
+            this.onNumberOperatorChange(this.numberOperators.options[0]);
+        }
+        else {
+            this.onStringOperatorChange(this.stringOperators.options[0]);
+        }
     }
 
-    onNumberOperatorChange(option: string) {
+    onNumberOperatorChange(option: string): void {
         
         this.stringOperators.selectedOption = null;
         this.numberOperators.selectedOption = option;
@@ -37,7 +45,7 @@ export class OperatorSelectComponent implements OnInit {
         this.change.emit({option, type: 'number'});
     }
     
-    onStringOperatorChange(option: string) {
+    onStringOperatorChange(option: string): void {
         
         this.stringOperators.selectedOption = option;
         this.numberOperators.selectedOption = null;

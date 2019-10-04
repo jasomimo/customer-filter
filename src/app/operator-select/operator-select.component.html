@@ -19,7 +19,6 @@
     <app-select-input *ngIf="showNumberSelect" 
                         [options]="numberOperators.options" 
                         [selectedOption]="numberOperators.selectedOption" 
-                        (focus)="onFocus()"
                         (change)="onNumberOperatorChange($event)"></app-select-input>
                         
     <app-select-input *ngIf="!showNumberSelect" 

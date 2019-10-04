@@ -7,8 +7,6 @@ export class AutofocusDirective implements OnInit {
 
     constructor(private element: ElementRef) {
         
-        console.log(element);
-        
         if (!element.nativeElement['focus']) {
             throw Error('Focus cannot be applied to this element: ' + element.nativeElement['tagName']);
         }
